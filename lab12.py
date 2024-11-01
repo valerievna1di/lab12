@@ -15,9 +15,9 @@ trains = [
     {"number": "110", "route": "Sumy - Kyiv", "arrival": "16:45", "departure": "17:05"}
 ]
 
-# Збереження даних у JSON-файл
+# Збереження даних у JSON-файл з відступами для форматування
 with open("trains_data.json", "wt") as file:
-    json.dump(trains, file)
+    json.dump(trains, file, indent=4)
 
 # Функція для перевірки правильності формату часу
 def validate_time(time_str):
@@ -66,7 +66,7 @@ while True:
         trains = add_train(trains)
 
         with open("trains_data.json", "wt") as file:
-            json.dump(trains, file)
+            json.dump(trains, file, indent=4)
 
         print("Train added successfully.")
 
