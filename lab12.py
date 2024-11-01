@@ -2,22 +2,24 @@ import json
 from datetime import datetime
 
 # Початкові дані поїздів
-trains = [
-    {"number": "101", "route": "Kyiv - Kharkiv", "arrival": "12:30", "departure": "12:50"},
-    {"number": "102", "route": "Lviv - Odesa", "arrival": "14:00", "departure": "14:20"},
-    {"number": "103", "route": "Dnipro - Zaporizhzhia", "arrival": "09:15", "departure": "09:45"},
-    {"number": "104", "route": "Kyiv - Lviv", "arrival": "11:00", "departure": "11:30"},
-    {"number": "105", "route": "Kharkiv - Odesa", "arrival": "15:45", "departure": "16:05"},
-    {"number": "106", "route": "Odesa - Kyiv", "arrival": "17:10", "departure": "17:30"},
-    {"number": "107", "route": "Lviv - Kyiv", "arrival": "18:20", "departure": "18:40"},
-    {"number": "108", "route": "Kyiv - Dnipro", "arrival": "13:15", "departure": "13:35"},
-    {"number": "109", "route": "Odesa - Lviv", "arrival": "10:00", "departure": "10:20"},
-    {"number": "110", "route": "Sumy - Kyiv", "arrival": "16:45", "departure": "17:05"}
-]
+trains_data = {
+    "trains": [
+        {"number": "101", "route": "Kyiv - Kharkiv", "arrival": "12:30", "departure": "12:50"},
+        {"number": "102", "route": "Lviv - Odesa", "arrival": "14:00", "departure": "14:20"},
+        {"number": "103", "route": "Dnipro - Zaporizhzhia", "arrival": "09:15", "departure": "09:45"},
+        {"number": "104", "route": "Kyiv - Lviv", "arrival": "11:00", "departure": "11:30"},
+        {"number": "105", "route": "Kharkiv - Odesa", "arrival": "15:45", "departure": "16:05"},
+        {"number": "106", "route": "Odesa - Kyiv", "arrival": "17:10", "departure": "17:30"},
+        {"number": "107", "route": "Lviv - Kyiv", "arrival": "18:20", "departure": "18:40"},
+        {"number": "108", "route": "Kyiv - Dnipro", "arrival": "13:15", "departure": "13:35"},
+        {"number": "109", "route": "Odesa - Lviv", "arrival": "10:00", "departure": "10:20"},
+        {"number": "110", "route": "Sumy - Kyiv", "arrival": "16:45", "departure": "17:05"}
+    ]
+}
 
 # Збереження даних у JSON-файл з відступами для форматування
 with open("trains_data.json", "wt") as file:
-    json.dump(trains, file, indent=4)
+    json.dump(trains_data, file, indent=4)
 
 # Функція для перевірки правильності формату часу
 def validate_time(time_str):
@@ -37,7 +39,8 @@ while True:
     # Додавання нового поїзда
     if option == 1:
         with open("trains_data.json", "rt") as file:
-            trains = json.load(file)
+            trains_data = json.load(file)
+            trains = trains_data["trains"]
 
         def add_train(trains):
             print("Add a new train:")
@@ -63,17 +66,18 @@ while True:
             trains.append({"number": number, "route": route, "arrival": arrival, "departure": departure})
             return trains
 
-        trains = add_train(trains)
+        trains_data["trains"] = add_train(trains)
 
         with open("trains_data.json", "wt") as file:
-            json.dump(trains, file, indent=4)
+            json.dump(trains_data, file, indent=4)
 
         print("Train added successfully.")
 
     # Відображення всіх поїздів за часом прибуття
     elif option == 2:
         with open("trains_data.json", "rt") as file:
-            trains = json.load(file)
+            trains_data = json.load(file)
+            trains = trains_data["trains"]
 
             # Сортування поїздів за часом прибуття
             sorted_trains = sorted(trains, key=lambda train: datetime.strptime(train['arrival'], '%H:%M'))
@@ -85,7 +89,8 @@ while True:
     # Пошук поїзда за номером або маршрутом
     elif option == 3:
         with open("trains_data.json", "rt") as file:
-            trains = json.load(file)
+            trains_data = json.load(file)
+            trains = trains_data["trains"]
 
         search_type = input("Search by 'number' or 'route': ").strip().lower()
         search_value = input(f"Enter {search_type}: ")
